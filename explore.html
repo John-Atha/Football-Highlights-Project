@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>FootLand</title>
+        <link rel="stylesheet" href="styles/styles2.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <script src="dynamic.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <body>
+        <div id="navbar">
+                    <a id="home-button" class="nav-link" href="#">Home</a>
+                    <a id="latest-button" class="nav-link" href="#">Latest</a>
+                    <a id="teams-button" class="nav-link" href="#">Teams</a>
+                    <div id="leagues-button" class="drop-down-button nav-link">Leagues
+                      <div id="leagues-content" class="drop-down-content">
+                        <a class="leagues-link" href="#">Premier League</a>
+                        <a class="leagues-link" href="#">League 1</a>
+                        <a class="leagues-link" href="#">La Liga</a>
+                        <a class="leagues-link" href="#">La Liga</a>
+                        <a class="leagues-link" href="#">La Liga</a>
+                        <a class="leagues-link" href="#">La Liga</a>
+                      </div>    
+                    </div>
+                    <a id="trending-button" class="nav-link" href="#">Trending</a>
+                    <a id="recommended-button" class="nav-link" href="#">Recommended</a>
+                    <a id="about-button" class="nav-link" href="#">Contact</a>
+        </div>
+
+      <!--<div id="latest">-->
+        <div id="title-switch-container">
+          <div id="latest-title" class="title">
+            Latest
+          </div>
+          <div id="team-title" class="title">
+          </div>
+          <div id="league-title" class="title">
+          </div>
+          <div id="trending-title" class="title">
+            Trending
+          </div>
+          <div id="recommended-title" class="title">
+            Recommended
+          </div>
+          <div id="teams-page-title" class="title">
+            Teams
+          </div>
+          <div id="about-page-title" class="title">
+            About us
+          </div>
+          <div class="labels-container">
+            <p id="label1">Dark Mode</p>
+            <p id="label2">Fast Transitions</p>
+          </div>
+          <div id="switch-container">
+            <div class="switch" id="switch-container-1">
+              <input id="switch-1" type="checkbox" class="switch-input" />
+              <label for="switch-1" class="switch-label"></label>
+            </div>
+            <div class="switch" id="switch-container-2">
+              <input id="switch-2" type="checkbox" class="switch-input" />
+              <label for="switch-2" class="switch-label"></label>
+            </div>
+          </div>
+        </div>
+
+
+        <table class="feed">
+          <tr>
+            <td class="feed-item">
+              <div class="info">
+                <div class="match-name">Podbeskidzie-Legia</div>
+                <div class="score">Score: 1-0</div>
+                <div class="league">League: League 1</div>
+                <div class="date">Date: 20/20/20</div>
+              </div>
+              <div class="video" style='width:70%;height:100%;position:relative;padding-bottom:0%;'>
+                <iframe src='https:\/\/www.scorebat.com\/embed\/v\/601702f492397\/?s=2'
+                frameborder='0' width='100%' height='100%' allowfullscreen allow='autoplay;
+                fullscreen' style='width:100%;height:100%;position:absolute;left:0px;
+                top:0px;overflow:hidden;'></iframe>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="feed-item">
+              Item-2<br>
+              lala<br>
+              lala<br>
+              lala<br>
+              lala
+            </td>
+          </tr>
+          <tr>
+            <td class="feed-item">
+              Item-3<br>
+              lala<br>
+              lala<br>
+              lala<br>
+              lala        
+            </td>
+          </tr>
+        </table>
+      <!--</div>-->
+    
+      <div id="teams-list">
+        <div id="teams-page-list">
+          <ul>
+            <li><a class="teams-link" href="#">Real Madrid</a></li>
+            <li><a class="teams-link" href="#">Barca</a></li>
+            <li><a class="teams-link" href="#">Manchester United</a></li>
+            <li><a class="teams-link" href="#">Manchester City</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="about-text">
+        Hello and thank you for supporting me!<br>
+        I am John Athanasiou, the developer of this website.<br>
+        This is an educational website that gives people access to a variety of football matches highlights.<br>
+        The displayed information is retrieved from the extremelly user-friendly api: <a id="api-link" target="_blank" rel="noopener noreferrer" href="https://www.scorebat.com/video-api/">ScoreBat</a><br> 
+        Lots of new useful and playful apps are coming soon!<br>
+        You can see more of my work at my:
+        <a id="git-link" href="https://github.com/John-Atha" target="_blank" rel="noopener noreferrer">Github Profile</a><br>
+        Thank you and... 
+        <p style="font-weight: bold; font-size:large;">Stay Tuned !!</p>
+      </div>
+
+
+    </body>
+
+</html>

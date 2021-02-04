@@ -1,0 +1,569 @@
+@keyframes title_appearing{
+
+    from {
+        margin-left: 45%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+@keyframes appearing{
+
+    0%{
+        opacity: 0%;
+    }
+    40%{
+        opacity: 20%;
+    }
+    50%{
+        opacity: 40%;
+    }
+    60%{
+        opacity: 60%;
+    }
+    80%{
+        opacity: 80%;
+    }
+    100%{
+        opacity: 100%;
+    }
+}
+@keyframes delay_appearing{
+
+    0%{
+        opacity: 0%;
+    }
+    40%{
+        opacity: 0%;
+    }
+    50%{
+        opacity: 0%;
+    }
+    60%{
+        opacity: 30%;
+    }
+    80%{
+        opacity: 60%;
+    }
+    100%{
+        opacity: 100%;
+    }
+}
+@keyframes more_delay_appearing{
+
+    0%{
+        opacity: 0%;
+    }
+    40%{
+        opacity: 0%;
+    }
+    50%{
+        opacity: 0%;
+    }
+    60%{
+        opacity: 0%;
+    }
+    70% {
+        opacity: 0%;
+    }
+    80%{
+        opacity: 40%;
+    }
+    90% {
+        opacity: 70%
+    }
+    100%{
+        opacity: 100%;
+    }
+}
+@keyframes even_more_delay_appearing{
+
+    0%{
+        opacity: 0%;
+    }
+    40%{
+        opacity: 0%;
+    }
+    50%{
+        opacity: 0%;
+    }
+    60%{
+        opacity: 0%;
+    }
+    70% {
+        opacity: 0%;
+    }
+    80%{
+        opacity: 0%;
+    }
+    85% {
+        opacity: 30%;
+    }
+    90% {
+        opacity: 60%;
+    }
+    95% {
+        opacity: 70%;        
+    }
+    100%{
+        opacity: 100%;
+    }
+}
+
+$lettersColor: white;
+$otherColor: rgb(68, 202, 68);
+$barcolor: #6FB98F;
+$backround-color: rgb(39, 12, 57);
+
+html {
+    height: 100%;
+    width: 100vw;
+}
+
+body {
+    height: 100%;
+    margin:0%;
+    background-image: url('../static/jonathan-petersson-ARU18GpF6QQ-unsplash.jpg');
+    background-size:cover;
+    background-position-x: center;
+    background-position-y:top;
+    display: grid;
+    grid-template-rows: min-content min-content min-content;
+    row-gap: 20%;
+    color: $lettersColor;
+}
+
+a {
+    color: $lettersColor;
+}
+
+#title-container {
+    margin-top: 1%;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 100%;
+    animation:
+        title_appearing 4s;
+}
+
+h1 {
+    grid-row: 1;
+    margin:0%;
+    margin-left:1%;
+}
+
+h4 {
+    grid-row: 2;
+    margin: 0%;
+    margin-left:1%;
+}
+
+#intro-message {
+    grid-row: 2;
+    text-align: center;
+    font-size: 200%;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: min-content min-content auto;
+}
+
+#p1 {
+    margin-top: 0%;
+    margin-bottom: 0%;
+    grid-row: 1;
+    animation:
+        delay_appearing 5s;
+}
+
+#p2 {
+    margin-top: 0%;
+    margin-bottom: 0%;
+    grid-row: 2;
+    animation:
+        more_delay_appearing 6s;
+}
+
+#button-container {
+    font-size: 150%;
+    grid-row: 3;
+    display: grid;
+    grid-template-rows: 100%;
+    grid-template-columns: 50% 50%;
+    justify-items: center;
+    align-items: center;
+    animation:
+        even_more_delay_appearing 7s;
+}
+
+.button-init-template {
+    height: min-content;
+    width: 25%;
+}
+
+button {
+    transition: all 0.5s;
+    cursor: pointer;
+}
+
+button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+  
+button:hover span {
+    padding-right: 25px;
+}
+  
+button:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+  
+#proceed {
+    @extend .button-init-template;
+    grid-column: 1;
+}
+
+
+#about-us {
+    @extend .button-init-template;
+    grid-column: 2;
+}
+
+
+
+.init-choice {
+    margin-top: 30%;
+    background-color: $otherColor;
+    border: solid  $otherColor;
+    border-radius: 7px;
+    font-size: 40%;
+}
+
+
+#navbar {
+    border: solid 1px $otherColor;
+    border-radius: 7px;
+    display: grid;
+    width: 100%;
+    height:min-content;
+    grid-template-columns: min-content min-content min-content min-content min-content min-content min-content;
+    grid-template-rows: 100%;
+    background-color: $otherColor;
+    animation:
+        appearing 2s;
+/*    a:hover, div:hover {
+        background-clip:content-box;
+        padding: auto;
+        background-color: $lightest-hover;
+        background-size: 140%
+    }
+*/
+}
+
+.nav-link {
+    font-size: medium;
+}
+
+.nav-link:hover {
+    transform: scale(1.1);
+}
+
+.drop-down-button {
+    .drop-down-content {
+        display: none;
+    }
+}
+
+.drop-down-button:hover {
+    .drop-down-content {
+        animation:
+            appearing 0.2s;
+        position: absolute;
+        height:min-content;
+        width: 140px;
+        background-color: black;
+        border: solid 1px #6FB98F;
+        border-radius: 5px;
+        display: grid;
+        grid-template-rows: min-content min-content min-content min-content min-content min-content;
+        grid-template-columns: 100%;
+        a {
+            width: 90%;
+            font-size: medium;
+    
+            padding: 3%;
+        }
+        a:hover {
+    
+            text-decoration: none;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+    }
+}
+
+
+#teams-list {
+    z-index: -1;
+    width: 95%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    /*grid-row: 2;*/
+    display: grid;
+    grid-template-rows: auto;
+}
+
+.feed {
+    margin-top: 2%;
+    z-index: -1;
+    height:100%;
+    $feed-width: 80% !global;
+    width: $feed-width;
+    $side-margin-feed: (100%-$feed-width)/2 !global;
+    margin-left: $side-margin-feed;
+    margin-right: $side-margin-feed;
+    margin-bottom: 10%;    
+    grid-row: 3;
+    border-radius: 7px;
+}
+
+.feed-animation {
+    animation:
+        more_delay_appearing 3s 1;
+}
+
+tr {
+    width: 100%;
+    height: 60%;
+    margin-right: 0%;
+}
+
+#title-switch-container {
+    display: grid;
+    grid-template-columns: 75% 15% 10%;
+    grid-template-rows: min-content;
+}
+
+#switch-container {
+    grid-column: 3;
+    display: grid;
+    row-gap: 05%;
+    $switch-width: 80px !global;
+    width: $switch-width;
+    margin-left: 0%;
+    $switch-height: 80% !global;
+    height: $switch-height;
+    grid-template-rows: 05% 40% 40%;
+    grid-template-columns: 100%;
+}
+
+.labels-container {
+    grid-column: 2;
+    row-gap: 05%;
+    height: $switch-height;
+    display: grid;
+    grid-template-rows: 05% 40% 40%;
+    justify-content: center;
+}
+
+#label1 {
+    grid-row: 2;
+    margin: 0%;
+}
+
+#label2 {
+    grid-row: 3;
+    margin: 0%;
+}
+
+
+#switch-container-1 {
+    grid-row: 2;    
+}
+
+#switch-container-2 {
+    grid-row: 3;
+}
+
+// switch styling code from:
+// https://codepen.io/chriscoyier/pen/JjozJLv
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 70%;
+}
+.switch-input {
+    display: none;
+}
+.switch-label {
+    display: block;
+    width: 100%;
+    height: $switch-height;
+    text-indent: -150%;
+    clip: rect(0 0 0 0);
+    color: $lettersColor;
+    user-select: none;
+}
+.switch-label::before,
+.switch-label::after {
+    content: "";
+    display: block;
+    position: absolute;
+    cursor: pointer;
+}
+.switch-label::before {
+    width: 100%;
+    height: $switch-height;
+    background-color: #dedede;
+    border-radius: 9999em;
+    -webkit-transition: background-color 0.25s ease;
+    transition: background-color 0.25s ease;
+}
+.switch-label::after {
+    top: 0;
+    left: 0;
+    width: 40%;
+    height: $switch-height;
+    border-radius: 50%;
+    background-color: #fff;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.45);
+    -webkit-transition: left 0.5s ease;
+    transition: left 0.5s ease;
+}
+.switch-input:checked + .switch-label::before {
+    background-color: #89c12d;
+}
+.switch-input:checked + .switch-label::after {
+    left: 60%;
+}
+
+.title {
+    margin-top: 2%;
+    margin-left: $side-margin-feed;
+    grid-column: 1;
+    width: 50%;
+    /*grid-row: 1;*/
+    font-size: 160%;
+    height: min-content;
+    animation:
+        delay_appearing 3s;
+}
+
+.feed-item {
+    width: 100%;
+    margin: 0%;
+    height:100%;
+    padding:1%;
+    border: 2px solid rgb(223, 223, 223);
+    border-collapse: collapse;
+    display: grid;
+    grid-template-columns: 40% 60%;
+    background: rgba(126, 128, 127, 0.25);
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+}
+
+.match-name {
+    grid-row: 1;
+    font-size: large;
+}
+
+.info {
+    grid-column:1;
+    display: grid;
+    grid-template-rows: 20% 10% 10% 0%;
+}
+.score {
+    grid-row: 2;
+}
+
+.league{
+    grid-row: 3;
+}
+.date {
+    grid-row: 4;
+}
+.video {
+    justify-content: center;
+    border: solid white 2px;
+    border-radius: 5px;
+    margin: auto;
+    grid-column:2;
+}
+
+#teams-page-list {
+    grid-row: 1;
+    width: $feed-width;
+    margin-left: $side-margin-feed;
+    margin-right: $side-margin-feed;
+    margin-top: 2%;
+    animation:
+        more_delay_appearing 3s;
+    border-radius: 7px;
+    background: rgba(0, 0, 0, 0.25);
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+}
+
+ul {
+    list-style-type: none;
+    padding: 1%;
+    li {
+        .teams-link {
+            color: $lettersColor;
+        }
+        .teams-link:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    }
+}
+
+#about-text {
+    padding: 2%;
+    margin-top: 2%;
+    z-index: -1;
+    height:100%;
+    width: $feed-width;
+    margin-left: $side-margin-feed;
+    margin-right: $side-margin-feed;
+    margin-bottom: 10%;    
+    grid-row: 3;
+    border-radius: 7px;
+    animation:
+        more_delay_appearing 3s;
+    background: rgba(126, 128, 127, 0.25);
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 4px );
+    -webkit-backdrop-filter: blur( 4px );
+}
+
+#api-link, #git-link {
+    color: rgb(120, 181, 247);
+    font-weight: bold;
+    font-size: 120%;
+}
+
+#api-link:hover, #git-link:hover {
+    transform: scale(1.2);
+}
+
+
