@@ -417,6 +417,15 @@ button:hover span:after {
           transform: scale(1.1);
 }
 
+/*.leagues-link {
+    border-bottom: solid 1px #6FB98F;
+}*/
+ul {
+  columns: 4;
+  -webkit-columns: 4;
+  -moz-columns: 4;
+}
+
 .drop-down-button .drop-down-content {
   display: none;
 }
@@ -428,7 +437,7 @@ button:hover span:after {
   height: -webkit-min-content;
   height: -moz-min-content;
   height: min-content;
-  width: 140px;
+  width: 400%;
   background-color: black;
   border: solid 1px #6FB98F;
   border-radius: 5px;
@@ -443,8 +452,8 @@ button:hover span:after {
 
 .drop-down-button:hover .drop-down-content a {
   width: 90%;
-  font-size: medium;
-  padding: 3%;
+  font-size: small;
+  padding-left: 3%;
 }
 
 .drop-down-button:hover .drop-down-content a:hover {

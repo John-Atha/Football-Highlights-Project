@@ -1,3 +1,10 @@
+/* global variables */
+var matchesNumber = 0;
+var allMatches = [];
+var allTeams = [];
+var allLeagues=[];
+
+/*...colors functions...*/
 function updateLetterColors(mode="dark") {
     if (mode=="dark") {
         document.querySelector('body').style.color="white";
@@ -27,12 +34,17 @@ function updateLetterColors(mode="dark") {
 }
 
 function updateOtherColors(mode="dark") {
+    let color = "";
     if (mode=="dark") {
-        ;
+        color="lightgrey";
+        
     }
     else {
-        ;
+        color="#6FB98F";
     }
+    document.querySelectorAll('.leagues-link').forEach( (el) => {
+        el.style.borderBottom = "solid 1px "+color;
+    })
 }
 
 function updateBackroundColor(mode="dark") {
@@ -69,7 +81,9 @@ function updateColors() {
     updateNavBarColor(mode);
     updateLetterColors(mode);
 }
+/*.....................*/
 
+/*...speed transition functions...*/
 function goSmooth() {
     try {
         document.querySelector('#p1').style.animationDuration="5s";
@@ -203,6 +217,7 @@ function updateSpeed() {
         goSmooth();
     }
 }
+/*....................*/
 
 function hideAll() {
     const latest = document.querySelector('#latest-title');
@@ -226,6 +241,214 @@ function hideAll() {
     latest.style.display="none";
     feed.style.display="none";
 }
+/*....................*/
+
+/*
+function findTeam(team) {
+    console.log("looking for team: "+team);
+    let index = -1;
+    for (i=0; i<allTeams.length; i++) {
+        if (allTeams[i][0]==team) {
+            console.log("thn brhka");
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
+function findLeague(league) {
+    console.log("looking for league: "+league);
+    let index=-1;
+    for (i=0; i<allLeagues.length; i++) {
+        if (allLeagues[i][0]==league) {
+            console.log("thn brhka");
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
+function addTeam(team, matchIndex) {
+    console.log("adding: team="+team+", match="+matchIndex);
+    let index = findTeam(team);
+    if (index!=-1) {    // if team already in list
+        allTeams[index].push(matchIndex);   // add this match to the team
+    }
+    else {
+        allTeams.push([team, matchIndex]); // add team and match
+    }
+}
+
+function addLeague(league, matchIndex) {
+    console.log("adding: league="+league+", match="+matchIndex);
+    let index = findLeague(league);
+    if (index!=-1) {
+        allLeagues[index].push(matchIndex);
+    }
+    else {
+        allLeagues.push([league, matchIndex]);
+    }
+}
+
+function getAllTeamsLeagues() {
+    for (i=0; i<matchesNumber; i++) {
+        addTeam(allMatches[i].side1.name, i);
+        addTeam(allMatches[i].side2.name, i);
+        addLeague(allMatches[i].competition.name, i);
+    }
+      
+    console.log(allTeams);
+    console.log(allLeagues);
+}
+
+*/
+
+
+function addLeague(league) {
+    console.log("adding: league="+league);
+    if (!allLeagues.includes(league)) {
+        allLeagues.push(league);
+    }
+}
+
+function addTeam(team) {
+    console.log("adding: team="+team);
+    if (!allTeams.includes(team)) {
+        allTeams.push(team);
+    }
+}
+
+function getAllTeamsLeagues() {
+    for (i=0; i<allMatches.length; i++) {
+        addTeam(allMatches[i].side1.name);
+        addTeam(allMatches[i].side2.name);
+        addLeague(allMatches[i].competition.name);
+    }
+    console.log(allTeams);
+    console.log(allLeagues);
+}
+
+function insertDOMTeams() {
+    let element = document.getElementById("teams-ul");
+    for (i=0; i<allTeams.length; i++) {
+        let li = document.createElement("li");
+        let a = document.createElement("a");
+        a.setAttribute("class", "teams-link");
+        a.setAttribute("href", "#");
+        let text = document.createTextNode(allTeams[i]);
+        a.appendChild(text);
+        li.appendChild(a);
+        element.appendChild(li);
+    }
+}
+
+function insertDOMLeagues() {
+    const list = document.getElementById("leagues-content");
+    allLeagues.forEach( (league) => {
+        let a = document.createElement("a");
+        let text = document.createTextNode(league);
+        a.appendChild(text);
+        a.setAttribute("class", "leagues-link");
+        a.setAttribute("href", "#");
+        list.appendChild(a);
+    })
+}
+
+function insertDOMTeamsLeagues() {
+    insertDOMTeams();
+    insertDOMLeagues();
+    updateColors();
+    const leagues_links = document.querySelectorAll('.leagues-link');
+    // re-establish the event listener for leagues links clicking
+    leagues_links.forEach( (link) => {
+        link.onclick = () => {
+            console.log("lililil");
+            feedLeagueUpdate(link);
+        }
+    })
+}
+
+/* keep matches with only one highlight video*/
+function testMatch(i) {
+    let videos2 = allMatches[i].videos;
+
+    let found=false;
+    for (j=0; j<videos2.length; j++) {
+        if (allMatches[i].videos.length==0) {
+            console.log("no videos at "+ i);
+            continue;
+        }
+        let video = videos2[j];
+        if (video.title=="Highlights") {
+            console.log("highlight at "+ j+" on match "+ i);
+            if (found) {
+                videos2.splice(j, 1);
+            }
+            else {
+                found=true; 
+                continue;   
+            }
+        }
+        else {
+            videos2.splice(j, 1);
+            j--;
+        }
+    }
+    if (found==false) {
+        console.log("@@@ no highlights at match "+ i);
+    }
+
+    if (videos2.length==0) {
+        allMatches.splice(i, 1);
+        console.log("--nothing on match "+ i + " " + allMatches[i].title);
+        return;
+    }
+
+    delete allMatches[i].embed;
+    delete allMatches[i].url;
+    delete allMatches[i].thumbnail;
+    delete allMatches[i].side1.url;
+    delete allMatches[i].side2.url;
+    delete allMatches[i].competition.id;
+    delete allMatches[i].competition.url;
+
+}
+
+function keepImportandData() {
+    for (i=0; i<matchesNumber; i++) {
+        if (allMatches[i]==null) {
+            console.log("null at "+i);
+            continue;
+        }
+        testMatch(i);
+    }
+    allMatches.forEach( (match) => {
+        if (match.videos.length>1) {
+            allMatches.splice(allMatches.indexOf(match), 1);
+        }
+    })
+}
+
+function getAllData() {
+    setTimeout(function() {}, 1000);    // wait for them to load
+    fetch('https://www.scorebat.com/video-api/v1/')
+    .then(response => response.json())
+    .then(data => {
+        console.log("before:");
+        console.log(data);
+        allMatches = data;
+        matchesNumber = allMatches.length;
+        keepImportandData();
+        console.log("after:");
+        console.log(allMatches);
+        getAllTeamsLeagues();
+        allTeams.sort();
+        allLeagues.sort();
+        insertDOMTeamsLeagues();
+    })
+}
 
 function showFeed() {
     const feeds = document.querySelectorAll('.feed');
@@ -235,9 +458,6 @@ function showFeed() {
     feed.classList.remove("feed-animation");
     feed.classList.add("feed-animation");
     feed.style.display="table";
-    const fast_switch = document.querySelector('#switch-2');
-    const mode = document.querySelector('#switch-1');
-    let timeout=2980;
     feed.style.zIndex = 0;
 }
 
@@ -347,6 +567,9 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Explore page");
         document.querySelector('body').style.backgroundImage='none';
         document.querySelector('body').style.rowGap=0;
+        hideAll();
+        pageInit();
+        getAllData();
         const home_button = document.querySelector('#home-button');
         const latest_button = document.querySelector('#latest-button');
         const teams_button = document.querySelector('#teams-button');
@@ -357,8 +580,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const leagues_links = document.querySelectorAll('.leagues-link');
         const theme_switch = document.querySelector('#switch-1');
         const fast_switch = document.querySelector('#switch-2');
-        hideAll();
-        pageInit();
         leagues_button.onmouseover = () => {
             fixDepths(-1);
         } 

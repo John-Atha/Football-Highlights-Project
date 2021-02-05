@@ -283,6 +283,16 @@ button:hover span:after {
     transform: scale(1.1);
 }
 
+/*.leagues-link {
+    border-bottom: solid 1px #6FB98F;
+}*/
+
+ul {
+    columns: 4;
+    -webkit-columns: 4;
+    -moz-columns: 4;
+}
+
 .drop-down-button {
     .drop-down-content {
         display: none;
@@ -295,7 +305,7 @@ button:hover span:after {
             appearing 0.2s;
         position: absolute;
         height:min-content;
-        width: 140px;
+        width: 400%;
         background-color: black;
         border: solid 1px #6FB98F;
         border-radius: 5px;
@@ -304,9 +314,8 @@ button:hover span:after {
         grid-template-columns: 100%;
         a {
             width: 90%;
-            font-size: medium;
-    
-            padding: 3%;
+            font-size: small;
+            padding-left: 3%;
         }
         a:hover {
     
@@ -500,6 +509,7 @@ tr {
 .date {
     grid-row: 4;
 }
+
 .video {
     justify-content: center;
     border: solid white 2px;
