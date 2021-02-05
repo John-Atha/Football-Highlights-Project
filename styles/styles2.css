@@ -328,7 +328,7 @@ h4 {
   height: -webkit-min-content;
   height: -moz-min-content;
   height: min-content;
-  width: 25%;
+  min-width: 20%;
 }
 
 button {

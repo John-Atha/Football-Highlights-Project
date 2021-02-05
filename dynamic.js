@@ -57,6 +57,7 @@ function updateNavBarColor(mode="dark") {
 
 function updateColors() {
     const theme_switch = document.querySelector('#switch-1');
+    console.log("change lighting theme");
     if (theme_switch.checked) {
         mode="dark";
     }
@@ -194,7 +195,7 @@ function goFast() {
 
 function updateSpeed() {
     const fast_switch = document.querySelector('#switch-2');
-    console.log("change theme");
+    console.log("change transition speed");
     if (fast_switch.checked) {
         goFast();
     }
@@ -227,7 +228,6 @@ function hideAll() {
 }
 
 function showFeed() {
-    console.log("run showFeed");
     const feeds = document.querySelectorAll('.feed');
     const feed = feeds[0];
     feed.style.display="none";
@@ -238,39 +238,103 @@ function showFeed() {
     const fast_switch = document.querySelector('#switch-2');
     const mode = document.querySelector('#switch-1');
     let timeout=2980;
-    //feed.style.animationPlayState="running";
-    updateColors();
     feed.style.zIndex = 0;
-    /*if (fast_switch.checked) {
-        console.log("fast mode");
+}
+
+function explorePageInit() {
+    const latest_title = document.querySelector('#latest-title');
+    console.log("location: explore");
+    history.pushState({page: 1}, "title1", "?page=latest");
+    feedCompute("latest");
+    latest_title.style.display="block";
+    showFeed();
+}
+
+function aboutUsPageInit() {
+    const about_title = document.querySelector('#about-page-title');
+    const about_us = document.querySelector('#about-text');
+    history.pushState({page: 4}, "title4", "?page=about-us");
+    console.log("location: about-us");
+    about_us.style.display="block";
+    about_title.style.display="block";
+    about_us.style.zIndex = 0;
+}
+
+function pageInit() {
+    if (window.location.href.includes("?explore")) {
+        explorePageInit();
     }
+
     else {
-        console.log("smooth mode");
-        /*setTimeout(function() {
-            console.log("pause animation");
-            feed.forEach( (el) => {
-                el.style.animationPlayState="paused";
-            })   
-        }, timeout);*/
-        /*let flag = false;
-        while(true) {
-            feed.onanimationiteration = (event) => {
-                console.log("happened");
-                feed.style.animationPlayState="paused";
-                flag=true;
-            }
-            feed.onanimationend = () => {
-                console.log("happened");
-                flag=true;
-            }
-            if (flag) {
-                break;
-            }
-            console.log("waiting");
-        }
-    }*/
-    //feed.style.opacity="1";
-    //}
+        aboutUsPageInit();
+    }
+}
+
+function fixDepths(z) {
+    const feeds = document.querySelectorAll('.feed');
+    const feed=feeds[0];
+    const teams = document.querySelector('#teams-list');
+    const about_us = document.querySelector('#about-text');
+    feed.style.zIndex = z;
+    teams.style.zIndex = z;
+    about_us.style.zIndex = z;
+}
+
+function showTeams() {
+    const teams_title = document.querySelector('#teams-page-title');
+    const teams = document.querySelector('#teams-list');
+    hideAll();
+    teams_title.style.display="block";
+    teams.style.display="grid";
+    teams.style.zIndex = 0;
+    history.pushState({page: 2}, "title2", "?page=teams");
+}
+
+function feedTeamUpdate(link) {
+    const team_title = document.querySelector('#team-title');
+    feedCompute("teams", link.innerHTML);
+    hideAll();
+    showFeed();
+    history.pushState({page: 2}, "title1", "?page="+link.innerHTML);
+    team_title.style.display="block";
+    team_title.innerHTML=link.innerHTML; 
+}
+
+function feedLeagueUpdate(link) {
+    const league_title = document.querySelector('#league-title');
+    feedCompute("league", link.innerHTML);
+    hideAll();
+    showFeed();
+    history.pushState({page: 2}, "title3", "?page="+link.innerHTML);
+    league_title.style.display = "block";
+    league_title.innerHTML = link.innerHTML;
+}
+
+function feedLatestUpdate() {
+    const latest_title = document.querySelector('#latest-title');
+    hideAll();
+    latest_title.style.display="block";
+    feedCompute("latest");
+    showFeed();
+    history.pushState({page: 1}, "title1", "?page=latest");
+}
+
+function feedTrendingUpdate() {
+    const trending_title = document.querySelector('#trending-title');
+    hideAll();
+    trending_title.style.display="block";
+    feedCompute("trending");
+    showFeed();
+    history.pushState({page: 3}, "title3", "?page=trending");
+}
+
+function feedRecommendedUpdate() {
+    const recommended_title = document.querySelector('#recommended-title');
+    hideAll();
+    recommended_title.style.display="block";
+    feedCompute("recommended");
+    showFeed();
+    history.pushState({page: 4}, "title4", "?page=recommended");
 }
 
 function feedCompute(how, parameter="") {
@@ -279,127 +343,60 @@ function feedCompute(how, parameter="") {
 
 document.addEventListener('DOMContentLoaded', () => {
     if (window.location.href.includes("explore")) {
-        updateColors("light");
+        updateColors();
         console.log("Explore page");
         document.querySelector('body').style.backgroundImage='none';
-        /*document.querySelector('body').style.backgroundColor="rgb(39, 12, 57)";
-        document.querySelector('#navbar').style.backgroundColor="#6FB98F";
-        document.querySelector('.drop-down-content').style.backgroundColor="#6FB98F";*/
         document.querySelector('body').style.rowGap=0;
         const home_button = document.querySelector('#home-button');
-        const teams_button = document.querySelector('#teams-button');
         const latest_button = document.querySelector('#latest-button');
-        const trending_button = document.querySelector('#trending-button');
+        const teams_button = document.querySelector('#teams-button');
         const leagues_button = document.querySelector('#leagues-button');
+        const trending_button = document.querySelector('#trending-button');
         const recommended_button = document.querySelector('#recommended-button');
         const about_button = document.querySelector('#about-button');
-        let feeds = document.querySelectorAll('.feed');
-        let feed=feeds[0];
-        let latest_title = document.querySelector('#latest-title');
-        let teams = document.querySelector('#teams-list');
-        const trending_title = document.querySelector('#trending-title');
-        const recommended_title = document.querySelector('#recommended-title');
-        const team_title = document.querySelector('#team-title');
-        const teams_title = document.querySelector('#teams-page-title');
-        const league_title = document.querySelector('#league-title');
-        const about_title = document.querySelector('#about-page-title');
         const leagues_links = document.querySelectorAll('.leagues-link');
         const theme_switch = document.querySelector('#switch-1');
         const fast_switch = document.querySelector('#switch-2');
-        const about_us = document.querySelector('#about-text');
         hideAll();
-
-        if (window.location.href.includes("?explore")) {
-            console.log("location: explore");
-            history.pushState({page: 1}, "title1", "?page=latest");
-            feedCompute("latest");
-            latest_title.style.display="block";
-            showFeed();
-        }
-
-        else {
-            history.pushState({page: 4}, "title4", "?page=about-us");
-            console.log("location: about-us");
-            about_us.style.display="block";
-            about_title.style.display="block";
-            about_us.style.zIndex = 0;
-        }
-
-
+        pageInit();
         leagues_button.onmouseover = () => {
-            feed.style.zIndex = -1;
-            teams.style.zIndex = -1;
-            about_us.style.zIndex = -1;
+            fixDepths(-1);
         } 
         leagues_button.onmouseout = () => {
-            feed.style.zIndex = 0;
-            teams.style.zIndex = 0;
-            about_us.style.zIndex = 0;
+            fixDepths(0);
         }
         leagues_links.forEach( (link) => {
             link.onclick = () => {
-                feedCompute("league", link.innerHTML);
-                hideAll();
-                showFeed();
-                //feed.style.animationPlayState=""
-                history.pushState({page: 2}, "title3", "?page="+link.innerHTML);
-                league_title.style.display = "block";
-                league_title.innerHTML = link.innerHTML;
+                feedLeagueUpdate(link);
             }
         })
         home_button.onclick = () => {
             window.location.href="index.html";
         }
         teams_button.onclick = () => {
-            hideAll();
-            teams_title.style.display="block";
-            updateColors();
-            teams.style.display="grid";
-            teams.style.zIndex = 0;
-            history.pushState({page: 2}, "title2", "?page=teams");
+            showTeams();
             const teamLinks = document.querySelectorAll('.teams-link');
             console.log("teams: " + teamLinks);
             teamLinks.forEach( (link) => {
                 link.onclick = () => {
-                    feedCompute("teams", link.innerHTML);
-                    hideAll();
-                    showFeed();
-                    history.pushState({page: 2}, "title1", "?page="+link.innerHTML);
-                    team_title.style.display="block";
-                    team_title.innerHTML=link.innerHTML;     
+                    feedTeamUpdate(link);    
                 }
             } )
         }
         latest_button.onclick = () => {
-            hideAll();
-            latest_title.style.display="block";
-            feedCompute("latest");
-            showFeed();
-            history.pushState({page: 1}, "title1", "?page=latest");
+            feedLatestUpdate();
         }
         trending_button.onclick = () => {
-            hideAll();
-            trending_title.style.display="block";
-            feedCompute("trending");
-            showFeed();
-            history.pushState({page: 3}, "title3", "?page=trending");
+            feedTrendingUpdate();
         }
         about_button.onclick = () => {
             hideAll();
-            about_us.style.display="block";
-            about_us.style.zIndex = 0;
-            about_title.style.display="block";
-            history.pushState({page: 5}, "title5", "?page=about-us");
+            aboutUsPageInit();
         }
         recommended_button.onclick = () => {
-            hideAll();
-            recommended_title.style.display="block";
-            feedCompute("recommended");
-            showFeed();
-            history.pushState({page: 4}, "title4", "?page=recommended");
+            feedRecommendedUpdate();
         }
         theme_switch.onchange = () => {
-            console.log("change theme");
             updateColors();
         }
         fast_switch.onchange = () => {
