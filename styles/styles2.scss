@@ -117,7 +117,7 @@ $backround-color: rgb(39, 12, 57);
 
 html {
     height: 100%;
-    width: 100vw;
+    width: 98vw;
 }
 
 body {
@@ -358,7 +358,7 @@ ul {
 
 tr {
     width: 100%;
-    height: 60%;
+    height: 300px;
     margin-right: 0%;
 }
 
@@ -477,7 +477,7 @@ tr {
 .feed-item {
     width: 100%;
     margin: 0%;
-    height:100%;
+    height: 300px;
     padding:1%;
     border: 2px solid rgb(223, 223, 223);
     border-collapse: collapse;
@@ -497,7 +497,7 @@ tr {
 .info {
     grid-column:1;
     display: grid;
-    grid-template-rows: 20% 10% 10% 0%;
+    grid-template-rows: 20% min-content min-content min-content;
 }
 .score {
     grid-row: 2;
@@ -510,13 +510,28 @@ tr {
     grid-row: 4;
 }
 
-.video {
+.video-container {
+    width:70%;
+    height:100%;
+    position:relative;
+    padding-bottom:0%;
     justify-content: center;
     border: solid white 2px;
     border-radius: 5px;
     margin: auto;
     grid-column:2;
 }
+
+.iframe {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    overflow: hidden;
+}
+
+
 
 #teams-page-list {
     grid-row: 1;

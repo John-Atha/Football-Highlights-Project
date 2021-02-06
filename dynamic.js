@@ -307,14 +307,14 @@ function getAllTeamsLeagues() {
 
 
 function addLeague(league) {
-    console.log("adding: league="+league);
+    //console.log("adding: league="+league);
     if (!allLeagues.includes(league)) {
         allLeagues.push(league);
     }
 }
 
 function addTeam(team) {
-    console.log("adding: team="+team);
+    //console.log("adding: team="+team);
     if (!allTeams.includes(team)) {
         allTeams.push(team);
     }
@@ -364,7 +364,6 @@ function insertDOMTeamsLeagues() {
     // re-establish the event listener for leagues links clicking
     leagues_links.forEach( (link) => {
         link.onclick = () => {
-            console.log("lililil");
             feedLeagueUpdate(link);
         }
     })
@@ -382,7 +381,7 @@ function testMatch(i) {
         }
         let video = videos2[j];
         if (video.title=="Highlights") {
-            console.log("highlight at "+ j+" on match "+ i);
+            //console.log("highlight at "+ j+" on match "+ i);
             if (found) {
                 videos2.splice(j, 1);
             }
@@ -397,12 +396,12 @@ function testMatch(i) {
         }
     }
     if (found==false) {
-        console.log("@@@ no highlights at match "+ i);
+        //console.log("@@@ no highlights at match "+ i);
     }
 
     if (videos2.length==0) {
         allMatches.splice(i, 1);
-        console.log("--nothing on match "+ i + " " + allMatches[i].title);
+        //console.log("--nothing on match "+ i + " " + allMatches[i].title);
         return;
     }
 
@@ -522,7 +521,7 @@ function feedTeamUpdate(link) {
 
 function feedLeagueUpdate(link) {
     const league_title = document.querySelector('#league-title');
-    feedCompute("league", link.innerHTML);
+    feedCompute("leagues", link.innerHTML);
     hideAll();
     showFeed();
     history.pushState({page: 2}, "title3", "?page="+link.innerHTML);
@@ -557,8 +556,85 @@ function feedRecommendedUpdate() {
     history.pushState({page: 4}, "title4", "?page=recommended");
 }
 
-function feedCompute(how, parameter="") {
-    console.log("feed reload for: " + how + ", " + parameter);
+function clearFeed() {
+    console.log("empty previous feed data");
+    const feed = document.querySelector(".feed");
+    while (feed.firstChild) {
+        feed.removeChild(feed.lastChild);
+    }
+}
+
+function matchInfo(match) {
+    let info = document.createElement("div");
+    info.classList.add("info");
+    let match_name = document.createElement("div");
+    match_name.classList.add("match-name");
+    match_name.innerHTML = match.title;
+    let score = document.createElement("div");
+    score.classList.add("score");
+    score.innerHTML = "Score: Unknown";
+    let league = document.createElement("div");
+    league.classList.add("league");
+    league.innerHTML = match.competition.name;
+    let date = document.createElement("div");
+    date.classList.add("date");
+    date.innerHTML = match.date.replace('T', ' ').slice(0, -5) ;
+    info.appendChild(match_name);
+    info.appendChild(score);
+    info.appendChild(league);
+    info.appendChild(date);
+    return info;
+}
+
+function matchVideo(match) {
+    let container = document.createElement("div");
+    container.classList.add("video-container");
+    let iframe = document.createElement("iframe");
+    let str1 = match.videos[0].embed;
+    let start = str1.indexOf("iframe src='")+12;
+    let str2 = str1.slice(start, -1);
+    let end = str2.indexOf("'");
+    let url = str2.slice(0, end);
+    iframe.setAttribute("src", url);
+    //iframe.setAttribute("allowfullscreen", "");
+    iframe.setAttribute("allow", "autoplay;fullscreen");
+    iframe.classList.add("iframe");
+    container.appendChild(iframe);
+    return container;
+}
+
+function addToFeed(match) {
+    console.log("add to feed:");
+    console.log(`${match}`);
+    const feed = document.querySelector(".feed");
+    var row = feed.insertRow(-1);
+    var item = row.insertCell(0);
+    item.classList.add("feed-item");
+    item.appendChild(matchInfo(match));
+    item.appendChild(matchVideo(match));
+}
+
+function feedCompute(how, param="") {
+    clearFeed();
+    console.log("feed reload for: " + how + ", " + param);
+    if (how=="teams") {
+        allMatches.forEach( (match) => {
+            if (match.side1.name==param || match.side2.name==param) {
+                addToFeed(match);
+            }
+        })
+    }
+    else if (how=="leagues") {
+        allMatches.forEach( (match) => {
+            if (match.competition.name==param) {
+                //console.log("match of this league");
+                addToFeed(match);
+            }
+            else {
+                //console.log("not match of this league");
+            }
+        })
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

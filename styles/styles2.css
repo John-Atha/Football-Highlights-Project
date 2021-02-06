@@ -222,7 +222,7 @@
 
 html {
   height: 100%;
-  width: 100vw;
+  width: 98vw;
 }
 
 body {
@@ -494,7 +494,7 @@ ul {
 
 tr {
   width: 100%;
-  height: 60%;
+  height: 300px;
   margin-right: 0%;
 }
 
@@ -638,7 +638,7 @@ tr {
 .feed-item {
   width: 100%;
   margin: 0%;
-  height: 100%;
+  height: 300px;
   padding: 1%;
   border: 2px solid #dfdfdf;
   border-collapse: collapse;
@@ -664,8 +664,9 @@ tr {
   grid-column: 1;
   display: -ms-grid;
   display: grid;
-  -ms-grid-rows: 20% 10% 10% 0%;
-      grid-template-rows: 20% 10% 10% 0%;
+  -ms-grid-rows: 20% min-content min-content min-content;
+      grid-template-rows: 20% -webkit-min-content -webkit-min-content -webkit-min-content;
+      grid-template-rows: 20% min-content min-content min-content;
 }
 
 .score {
@@ -683,7 +684,11 @@ tr {
   grid-row: 4;
 }
 
-.video {
+.video-container {
+  width: 70%;
+  height: 100%;
+  position: relative;
+  padding-bottom: 0%;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -692,6 +697,15 @@ tr {
   margin: auto;
   -ms-grid-column: 2;
   grid-column: 2;
+}
+
+.iframe {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: hidden;
 }
 
 #teams-page-list {
