@@ -480,6 +480,9 @@ function aboutUsPageInit() {
 }
 
 function pageInit() {
+    const body = document.querySelector('body');
+    body.style.backgroundImage='none';
+    body.style.rowGap=0;
     if (window.location.href.includes("?explore")) {
         explorePageInit();
     }
@@ -637,81 +640,132 @@ function feedCompute(how, param="") {
     }
 }
 
+function homeButtonListener() {
+    const home_button = document.querySelector('#home-button');
+    home_button.onclick = () => {
+        window.location.href="index.html";
+    }
+}
+
+function leaguesButtonsListeners() {
+    const leagues_button = document.querySelector('#leagues-button');
+    const leagues_links = document.querySelectorAll('.leagues-link');
+    leagues_button.onmouseover = () => {
+        fixDepths(-1);
+    } 
+    leagues_button.onmouseout = () => {
+        fixDepths(0);
+    }
+    leagues_links.forEach( (link) => {
+        link.onclick = () => {
+            feedLeagueUpdate(link);
+        }
+    })
+
+}
+
+function teamsButtonsListeners() {
+    const teams_button = document.querySelector('#teams-button');
+    teams_button.onclick = () => {
+        showTeams();
+        const teamLinks = document.querySelectorAll('.teams-link');
+        console.log("teams: " + teamLinks);
+        teamLinks.forEach( (link) => {
+            link.onclick = () => {
+                feedTeamUpdate(link);    
+            }
+        } )
+    }
+}
+
+function latestButtonListener() {
+    const latest_button = document.querySelector('#latest-button');
+    latest_button.onclick = () => {
+        feedLatestUpdate();
+    }
+}
+
+function trendingButtonListener() {
+    const trending_button = document.querySelector('#trending-button');
+    trending_button.onclick = () => {
+        feedTrendingUpdate();
+    }
+}
+
+function aboutButtonListener() {
+    const about_button = document.querySelector('#about-button');
+    about_button.onclick = () => {
+        hideAll();
+        aboutUsPageInit();
+    }
+}
+
+function recommendedButtonListener() {
+    const recommended_button = document.querySelector('#recommended-button');
+    recommended_button.onclick = () => {
+        feedRecommendedUpdate();
+    }
+}
+
+function themeSwitchListener() {
+    const theme_switch = document.querySelector('#switch-1');
+    theme_switch.onchange = () => {
+        updateColors();
+    }
+}
+
+function speedSwitchListener() {
+    const fast_switch = document.querySelector('#switch-2');
+    fast_switch.onchange = () => {
+        updateSpeed();
+    }
+}
+
+function explorePageListeners() {
+    leaguesButtonsListeners();
+    homeButtonListener();
+    teamsButtonsListeners();
+    latestButtonListener();
+    trendingButtonListener();
+    aboutButtonListener();
+    recommendedButtonListener();
+    themeSwitchListener();
+    speedSwitchListener();
+}
+
+function proceedButtonListener() {
+    const proceed = document.querySelector('#proceed');
+    proceed.onclick = () => {
+        console.log("chose explore");
+        window.location.href="explore.html"+"?explore";
+    }
+}
+
+function aboutUsButtonListener() {
+    const about_us = document.querySelector('#about-us');
+    about_us.onclick = () => {
+        console.log("chose about-us");
+        window.location.href="explore.html"+"?about-us";
+    } 
+}
+
+function welcomePageListeners() {
+    proceedButtonListener();
+    aboutUsButtonListener(); 
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     if (window.location.href.includes("explore")) {
-        updateColors();
         console.log("Explore page");
-        document.querySelector('body').style.backgroundImage='none';
-        document.querySelector('body').style.rowGap=0;
+        updateColors();
         hideAll();
         pageInit();
         getAllData();
-        const home_button = document.querySelector('#home-button');
-        const latest_button = document.querySelector('#latest-button');
-        const teams_button = document.querySelector('#teams-button');
-        const leagues_button = document.querySelector('#leagues-button');
-        const trending_button = document.querySelector('#trending-button');
-        const recommended_button = document.querySelector('#recommended-button');
-        const about_button = document.querySelector('#about-button');
-        const leagues_links = document.querySelectorAll('.leagues-link');
-        const theme_switch = document.querySelector('#switch-1');
-        const fast_switch = document.querySelector('#switch-2');
-        leagues_button.onmouseover = () => {
-            fixDepths(-1);
-        } 
-        leagues_button.onmouseout = () => {
-            fixDepths(0);
-        }
-        leagues_links.forEach( (link) => {
-            link.onclick = () => {
-                feedLeagueUpdate(link);
-            }
-        })
-        home_button.onclick = () => {
-            window.location.href="index.html";
-        }
-        teams_button.onclick = () => {
-            showTeams();
-            const teamLinks = document.querySelectorAll('.teams-link');
-            console.log("teams: " + teamLinks);
-            teamLinks.forEach( (link) => {
-                link.onclick = () => {
-                    feedTeamUpdate(link);    
-                }
-            } )
-        }
-        latest_button.onclick = () => {
-            feedLatestUpdate();
-        }
-        trending_button.onclick = () => {
-            feedTrendingUpdate();
-        }
-        about_button.onclick = () => {
-            hideAll();
-            aboutUsPageInit();
-        }
-        recommended_button.onclick = () => {
-            feedRecommendedUpdate();
-        }
-        theme_switch.onchange = () => {
-            updateColors();
-        }
-        fast_switch.onchange = () => {
-            updateSpeed();
-        }
+        explorePageListeners();
     }
     else {
         console.log("Welcome page");
-        const proceed = document.querySelector('#proceed');
-        const about_us = document.querySelector('#about-us');
-        proceed.onclick = () => {
-            console.log("chose explore");
-            window.location.href="explore.html"+"?explore";
-        }
-        about_us.onclick = () => {
-            console.log("chose about-us");
-            window.location.href="explore.html"+"?about-us";
-        }   
+        welcomePageListeners();
     }
 
 })
