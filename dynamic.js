@@ -15,7 +15,6 @@ if (localStorage.getItem('RecLeagues')) {
     RecLeagues = JSON.parse(localStorage.getItem('RecLeagues')); 
 }
 
-/*...colors functions...*/
 function updateLetterColors(mode="dark") {
     if (mode=="dark") {
         document.querySelector('body').style.color="white";
@@ -92,7 +91,6 @@ function updateColors() {
     updateNavBarColor(mode);
     updateLetterColors(mode);
 }
-/*.....................*/
 
 /*...speed transition functions...*/
 function goSmooth() {
@@ -228,7 +226,6 @@ function updateSpeed() {
         goSmooth();
     }
 }
-/*....................*/
 
 function hideAll() {
     const latest = document.querySelector('#latest-title');
@@ -252,70 +249,6 @@ function hideAll() {
     latest.style.display="none";
     feed.style.display="none";
 }
-/*....................*/
-
-/*
-function findTeam(team) {
-    console.log("looking for team: "+team);
-    let index = -1;
-    for (i=0; i<allTeams.length; i++) {
-        if (allTeams[i][0]==team) {
-            console.log("thn brhka");
-            index = i;
-            break;
-        }
-    }
-    return index;
-}
-
-function findLeague(league) {
-    console.log("looking for league: "+league);
-    let index=-1;
-    for (i=0; i<allLeagues.length; i++) {
-        if (allLeagues[i][0]==league) {
-            console.log("thn brhka");
-            index = i;
-            break;
-        }
-    }
-    return index;
-}
-
-function addTeam(team, matchIndex) {
-    console.log("adding: team="+team+", match="+matchIndex);
-    let index = findTeam(team);
-    if (index!=-1) {    // if team already in list
-        allTeams[index].push(matchIndex);   // add this match to the team
-    }
-    else {
-        allTeams.push([team, matchIndex]); // add team and match
-    }
-}
-
-function addLeague(league, matchIndex) {
-    console.log("adding: league="+league+", match="+matchIndex);
-    let index = findLeague(league);
-    if (index!=-1) {
-        allLeagues[index].push(matchIndex);
-    }
-    else {
-        allLeagues.push([league, matchIndex]);
-    }
-}
-
-function getAllTeamsLeagues() {
-    for (i=0; i<matchesNumber; i++) {
-        addTeam(allMatches[i].side1.name, i);
-        addTeam(allMatches[i].side2.name, i);
-        addLeague(allMatches[i].competition.name, i);
-    }
-      
-    console.log(allTeams);
-    console.log(allLeagues);
-}
-
-*/
-
 
 function addLeague(league) {
     if (!allLeagues.includes(league)) {
@@ -386,7 +319,6 @@ function insertDOMTeamsLeagues() {
     })
 }
 
-/* keep matches with only one highlight video*/
 function testMatch(i) {
     let videos2 = allMatches[i].videos;
 
