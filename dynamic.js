@@ -3,6 +3,17 @@ var matchesNumber = 0;
 var allMatches = [];
 var allTeams = [];
 var allLeagues=[];
+var dataReady;
+
+var RecTeams = [];
+var RecLeagues = [];
+
+if (localStorage.getItem('RecTeams')) {
+    RecTeams = JSON.parse(localStorage.getItem('RecTeams'));
+}
+if (localStorage.getItem('RecLeagues')) {
+    RecLeagues = JSON.parse(localStorage.getItem('RecLeagues')); 
+}
 
 /*...colors functions...*/
 function updateLetterColors(mode="dark") {
@@ -307,14 +318,12 @@ function getAllTeamsLeagues() {
 
 
 function addLeague(league) {
-    //console.log("adding: league="+league);
     if (!allLeagues.includes(league)) {
         allLeagues.push(league);
     }
 }
 
 function addTeam(team) {
-    //console.log("adding: team="+team);
     if (!allTeams.includes(team)) {
         allTeams.push(team);
     }
@@ -326,8 +335,6 @@ function getAllTeamsLeagues() {
         addTeam(allMatches[i].side2.name);
         addLeague(allMatches[i].competition.name);
     }
-    console.log(allTeams);
-    console.log(allLeagues);
 }
 
 function insertDOMTeams() {
@@ -364,7 +371,17 @@ function insertDOMTeamsLeagues() {
     // re-establish the event listener for leagues links clicking
     leagues_links.forEach( (link) => {
         link.onclick = () => {
+            if (RecLeagues.includes(link.innerHTML)) {
+                // remove it before re-adding it(so that it goes to the front again)
+                let index = RecLeagues.indexOf(link.innerHTML);
+                RecLeagues.splice(index, 1);
+            }
+            RecLeagues.unshift(link.innerHTML);
             feedLeagueUpdate(link);
+            if(RecLeagues.length>=5) {
+                RecLeagues.splice(-1, 1);
+            }
+            localStorage.setItem('RecLeagues', JSON.stringify(RecLeagues));
         }
     })
 }
@@ -376,12 +393,10 @@ function testMatch(i) {
     let found=false;
     for (j=0; j<videos2.length; j++) {
         if (allMatches[i].videos.length==0) {
-            console.log("no videos at "+ i);
             continue;
         }
         let video = videos2[j];
         if (video.title=="Highlights") {
-            //console.log("highlight at "+ j+" on match "+ i);
             if (found) {
                 videos2.splice(j, 1);
             }
@@ -395,13 +410,9 @@ function testMatch(i) {
             j--;
         }
     }
-    if (found==false) {
-        //console.log("@@@ no highlights at match "+ i);
-    }
 
     if (videos2.length==0) {
         allMatches.splice(i, 1);
-        //console.log("--nothing on match "+ i + " " + allMatches[i].title);
         return;
     }
 
@@ -418,7 +429,6 @@ function testMatch(i) {
 function keepImportandData() {
     for (i=0; i<matchesNumber; i++) {
         if (allMatches[i]==null) {
-            console.log("null at "+i);
             continue;
         }
         testMatch(i);
@@ -431,21 +441,22 @@ function keepImportandData() {
 }
 
 function getAllData() {
-    setTimeout(function() {}, 1000);    // wait for them to load
+    dataReady=false;
     fetch('https://www.scorebat.com/video-api/v1/')
     .then(response => response.json())
     .then(data => {
-        console.log("before:");
-        console.log(data);
+        //console.log(data);
         allMatches = data;
         matchesNumber = allMatches.length;
         keepImportandData();
-        console.log("after:");
-        console.log(allMatches);
+        dateSort(allMatches);
+        //console.log(allMatches);
         getAllTeamsLeagues();
         allTeams.sort();
         allLeagues.sort();
         insertDOMTeamsLeagues();
+        dataReady=true;
+        pageInit();
     })
 }
 
@@ -560,7 +571,6 @@ function feedRecommendedUpdate() {
 }
 
 function clearFeed() {
-    console.log("empty previous feed data");
     const feed = document.querySelector(".feed");
     while (feed.firstChild) {
         feed.removeChild(feed.lastChild);
@@ -575,7 +585,7 @@ function matchInfo(match) {
     match_name.innerHTML = match.title;
     let score = document.createElement("div");
     score.classList.add("score");
-    score.innerHTML = "Score: Unknown";
+    score.innerHTML = "Source: ScoreBat api";
     let league = document.createElement("div");
     league.classList.add("league");
     league.innerHTML = match.competition.name;
@@ -607,8 +617,6 @@ function matchVideo(match) {
 }
 
 function addToFeed(match) {
-    console.log("add to feed:");
-    console.log(`${match}`);
     const feed = document.querySelector(".feed");
     var row = feed.insertRow(-1);
     var item = row.insertCell(0);
@@ -617,26 +625,102 @@ function addToFeed(match) {
     item.appendChild(matchVideo(match));
 }
 
+function dateSort(array) {
+    return array.sort(function(a, b) {
+        return ( (a.date>b.date) ? -1 : ((a.date<b.date) ? 1 : 0));
+    });
+}
+
+function min(a, b) {
+    return ((a<b) ? a : b);
+}
+
+function addToFeedFromLeagues(RecLeagues) {
+    allMatches.forEach( (match) => {
+        if (RecLeagues.includes(match.competition.name)) {
+            addToFeed(match);
+        }
+    })
+}
+
+function addToFeedFromTeams(RecTeams) {
+    allMatches.forEach( (match) => {
+        if (RecTeams.includes(match.side1.name) || RecTeams.includes(match.side2.name)) {
+            addToFeed(match);
+        }
+    })
+}
+
+function addToFeedFromTeamsLeagues(RecLeagues, RecTeams) {
+    allMatches.forEach( (match) => {
+        if (RecTeams.includes(match.side1.name) || RecTeams.includes(match.side2.name) || RecLeagues.includes(match.competition.name)) {
+            addToFeed(match);
+        }
+    })
+}
+
+
 function feedCompute(how, param="") {
     clearFeed();
     console.log("feed reload for: " + how + ", " + param);
-    if (how=="teams") {
+    if (how==="teams") {
         allMatches.forEach( (match) => {
             if (match.side1.name==param || match.side2.name==param) {
                 addToFeed(match);
             }
         })
     }
-    else if (how=="leagues") {
+    else if (how==="leagues") {
         allMatches.forEach( (match) => {
             if (match.competition.name==param) {
-                //console.log("match of this league");
                 addToFeed(match);
             }
-            else {
-                //console.log("not match of this league");
+        })
+    }
+    else if (how==="latest") {
+        let limit = min(allMatches.length, 20);
+        for (i=0; i<limit; i++) {
+            addToFeed(allMatches[i]);
+        }
+    }
+    else if (how==="trending") {
+        let trendingTeams = ["AC Milan", "Juventus", "Inter Milan", 
+                             "Arsenal", "Manchester City", "Manchester United", "Chelsea", "Leicester City", "Liverpool", "Tottenham Hotspur", 
+                             "Real Madrid", "Atletico Madrid", "Barcelona",
+                             "Bayern Munich", "Borussia Dortmund"]
+        allMatches.forEach( (match) => {
+            if (trendingTeams.includes(match.side1.name) || trendingTeams.includes(match.side2.name)) {
+                addToFeed(match);
             }
         })
+    }
+    else {    // how===recommended
+        if (RecTeams.length===0) {
+            console.log("No teams history");
+            if(RecLeagues.length===0) {
+                console.log("No leagues history");
+                feedCompute("trending");
+            }
+            else {
+                console.log("Leagues history:");
+                console.log(RecLeagues);
+                addToFeedFromLeagues(RecLeagues);
+            }
+        }
+        else if (RecLeagues.length===0) {
+            console.log("No leagues history");
+            if (RecTeams.length!=0) {
+                console.log("Teams history:");
+                console.log(RecTeams);
+                addToFeedFromTeams(RecTeams);
+            }
+        }
+        else {
+            console.log("Leagues & Teams history:");
+            console.log(RecTeams);
+            console.log(RecLeagues);
+            addToFeedFromTeamsLeagues(RecLeagues, RecTeams)
+        }
     }
 }
 
@@ -658,7 +742,17 @@ function leaguesButtonsListeners() {
     }
     leagues_links.forEach( (link) => {
         link.onclick = () => {
+            if (RecLeagues.includes(link.innerHTML)) {
+                // remove it before re-adding it(so that it goes to the front again)
+                let index = RecLeagues.indexOf(link.innerHTML);
+                RecLeagues.splice(index, 1);
+            }
+            RecLeagues.unshift(link.innerHTML);
             feedLeagueUpdate(link);
+            if(RecLeagues.length==5) {
+                RecLeagues.splice(-1, 1);
+            }
+            localStorage.setItem('RecLeagues', JSON.stringify(RecLeagues));
         }
     })
 
@@ -669,10 +763,19 @@ function teamsButtonsListeners() {
     teams_button.onclick = () => {
         showTeams();
         const teamLinks = document.querySelectorAll('.teams-link');
-        console.log("teams: " + teamLinks);
         teamLinks.forEach( (link) => {
             link.onclick = () => {
-                feedTeamUpdate(link);    
+                if (RecTeams.includes(link.innerHTML)) {
+                    // remove it before re-adding it(so that it goes to the front again)
+                    let index = RecTeams.indexOf(link.innerHTML);
+                    RecTeams.splice(index, 1);
+                }
+                feedTeamUpdate(link);
+                if(RecTeams.length==5) {
+                    RecTeams.splice(-1, 1);
+                }
+                RecTeams.unshift(link.innerHTML);
+                localStorage.setItem('RecTeams', JSON.stringify(RecTeams));
             }
         } )
     }
@@ -736,7 +839,6 @@ function explorePageListeners() {
 function proceedButtonListener() {
     const proceed = document.querySelector('#proceed');
     proceed.onclick = () => {
-        console.log("chose explore");
         window.location.href="explore.html"+"?explore";
     }
 }
@@ -744,7 +846,6 @@ function proceedButtonListener() {
 function aboutUsButtonListener() {
     const about_us = document.querySelector('#about-us');
     about_us.onclick = () => {
-        console.log("chose about-us");
         window.location.href="explore.html"+"?about-us";
     } 
 }
@@ -759,9 +860,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Explore page");
         updateColors();
         hideAll();
-        pageInit();
-        getAllData();
         explorePageListeners();
+        getAllData();
     }
     else {
         console.log("Welcome page");
