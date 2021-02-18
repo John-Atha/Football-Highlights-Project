@@ -1,6 +1,6 @@
 # Football Matches Highlights Page
 ## <i>'Footland'</i>
-* This educational project gives people access to a variety of football matches highlights.
+* This <b>educational<b> project gives people access to a variety of football matches highlights.
 * Languages used: Javascript, HTML, SCSS(SASS).
 * The repo contains the front-end part.
 * Data are retrieved from the extremelly user-friendly <b>ScoreBat</b> api, at https://www.scorebat.com/video-api/.
